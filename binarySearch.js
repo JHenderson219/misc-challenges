@@ -81,8 +81,31 @@ class UserBST {
   delete(id) {
     let user = this.find(id);
     console.warn('deleting user', user);
-    // TODO: actually delete user
+    let childCount = user.childCount();
+    let replacement = null;
+    if (childCount === 2) {
+      let replacement = this._findInOrderSuccessor(user);
+      replacement.parent.left = null;
+      if (replacement.childCount() > 0) {
+        // inOrderSuccessor has exactly one child, a right child
+        replacement.parent.left = replacement.right;
+      }
+    }
+    if (childCount === 1) {
+      replacement = user.left || user.right;
+    }
+    let out = user;
+    user = replacement;
+    return out;
   }
+  _findInOrderSuccessor(node) {
+    let selected = node.right;
+    while (selected.left) {
+      selected = selected.left;
+    }
+    return selected;
+  }
+
   _selectDirection(key, rootKey) {
     let direction;
     if (key >= rootKey) {
@@ -99,6 +122,7 @@ class UserBST {
       this._insert(node, root[direction]);
     } else {
       root[direction] = node;
+      node.parent = root;
     }
   }
 }
@@ -110,9 +134,19 @@ class UserNode {
     this.id = user.id;
     this.left = null;
     this.right = null;
+    this.parent = null;
   }
   get(param) {
     return this[param];
+  }
+  childCount() {
+    if (this.left && this.right) {
+      return 2;
+    }
+    if (this.left || this.right) {
+      return 1;
+    }
+    return 0;
   }
 }
 
@@ -121,4 +155,4 @@ DATA.forEach((user) => {
   userBst.push(new UserNode(user));
 });
 
-console.warn(userBst.find(6));
+console.warn(userBst.delete(5));
