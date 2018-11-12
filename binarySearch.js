@@ -2,54 +2,56 @@ const DATA = [
   {
     "name": "Stout",
     "age": 32,
-    "id": "5be8cb6517f0541940fd76ff"
+    "id": 5
   },
   {
     "name": "Cook",
     "age": 29,
-    "id": "5be8cb652afcb1df4c106f15"
+    "id": 3
   },
   {
     "name": "Dolores",
     "age": 58,
-    "id": "5be8cb65e1b31e4c77aa0256"
+    "id": 4
   },
   {
     "name": "Robert",
     "age": 65,
-    "id": "5be8cb65d50a5d9454da2ee4"
+    "id": 7
   },
   {
     "name": "Malone",
     "age": 23,
-    "id": "5be8cb65232b12bab61a57d9"
+    "id": 6
   },
   {
     "name": "Cathy",
     "age": 24,
-    "id": "5be8cb654524ca4c8da37290"
+    "id": 8
   },
   {
     "name": "Molly",
     "age": 64,
-    "id": "5be8cb651bd75ce61d62f502"
+    "id": 1
   },
   {
     "name": "Lillian",
     "age": 24,
-    "id": "5be8cb65827195cc9c71e2f1"
+    "id": 10
   },
   {
     "name": "Lori",
     "age": 30,
-    "id": "5be8cb65bef0e3d9ad1f9c53"
+    "id": 2
   },
   {
     "name": "Guthrie",
     "age": 32,
-    "id": "5be8cb659d265f3bc333e97c"
+    "id": 9
   }
 ]
+
+
 class UserBST {
   constructor(sortParam){
     this.root = null;
@@ -64,10 +66,14 @@ class UserBST {
 
     return node;
   }
+  find() {
 
+  }
+  delete() {
+
+  }
   _insert(node, root) {
     let direction;
-    console.warn('inserting', node, 'on', root);
     if (node.get(this.sortParam) >= root.get(this.sortParam)) {
       direction = 'right';
       // if right is null, insert there
@@ -77,7 +83,6 @@ class UserBST {
       direction = 'left';
       // node is less than root
     }
-   ;
     
     if (root[direction] !== null) {
       this._insert(node,  root[direction]);
@@ -103,7 +108,7 @@ class UserNode {
   }
 }
 
-let userBst = new UserBST('age');
+let userBst = new UserBST('id');
 DATA.forEach((user) => {
   userBst.push(new UserNode(user));
 });
