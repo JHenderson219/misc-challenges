@@ -53,9 +53,9 @@ const DATA = [
 
 
 class UserBST {
-  constructor(sortParam){
+  constructor(sortKey){
     this.root = null;
-    this.sortParam = sortParam;
+    this.sortKey = sortKey;
   }
   push(node, root = this.root) {
     if (root === null) {
@@ -66,32 +66,40 @@ class UserBST {
 
     return node;
   }
-  find() {
-
+  find(id, node = this.root) {
+    if (node.id === id) {
+      return node;
+    }
+    let found;
+    let direction = this._selectDirection(id, node.get(this.sortKey));
+    let rootDirection = node[direction];
+    if (node[direction] !== null) {
+      return this.find(id, node[direction]);
+    }
+    throw new Error(`Could not find element in tree matching key ${id}`);
   }
-  delete() {
-
+  delete(id) {
+    let user = this.find(id);
+    console.warn('deleting user', user);
+    // TODO: actually delete user
   }
-  _insert(node, root) {
+  _selectDirection(key, rootKey) {
     let direction;
-    if (node.get(this.sortParam) >= root.get(this.sortParam)) {
+    if (key >= rootKey) {
       direction = 'right';
-      // if right is null, insert there
-      // if node is greater than or equal to right, right.right = node
-      // if node is less than right, right.left = node;
     } else {
       direction = 'left';
-      // node is less than root
     }
-    
+    return direction;
+  }
+
+  _insert(node, root) {
+    let direction = this._selectDirection(node.get(this.sortKey), root.get(this.sortKey));
     if (root[direction] !== null) {
-      this._insert(node,  root[direction]);
+      this._insert(node, root[direction]);
     } else {
       root[direction] = node;
     }
-    // if left is null, insert there
-    // if node is greater than or equal to left, left.right = node
-    // if node is less than left, left.left = node;
   }
 }
 
@@ -113,4 +121,4 @@ DATA.forEach((user) => {
   userBst.push(new UserNode(user));
 });
 
-console.warn(userBst);
+console.warn(userBst.find(6));
